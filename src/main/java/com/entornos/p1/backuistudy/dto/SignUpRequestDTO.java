@@ -18,7 +18,7 @@ public class SignUpRequestDTO {
         String studentCode;
 
         String email;
-        
+
         String password;
 
 }

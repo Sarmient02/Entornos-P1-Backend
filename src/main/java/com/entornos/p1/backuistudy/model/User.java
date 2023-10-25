@@ -44,6 +44,7 @@ public class User implements UserDetails {
     private LocalDateTime createdAt;
 
     @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
