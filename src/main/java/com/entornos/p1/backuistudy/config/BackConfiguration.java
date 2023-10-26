@@ -14,7 +14,11 @@ public class BackConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**");
+                registry.addMapping("/api/**")
+                        .allowedOrigins("https://entornos-p1-frontend.vercel.app/", "http://localhost:5500")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("Content-Type", "Authorization")
+                        .allowCredentials(true);;
             }
         };
     }

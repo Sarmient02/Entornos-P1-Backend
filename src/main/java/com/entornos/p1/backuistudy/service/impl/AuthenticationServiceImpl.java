@@ -3,6 +3,7 @@ package com.entornos.p1.backuistudy.service.impl;
 import com.entornos.p1.backuistudy.dto.JwtAuthenticationResponse;
 import com.entornos.p1.backuistudy.dto.SignInRequestDTO;
 import com.entornos.p1.backuistudy.dto.SignUpRequestDTO;
+import com.entornos.p1.backuistudy.exception.CustomException;
 import com.entornos.p1.backuistudy.model.Role;
 import com.entornos.p1.backuistudy.model.User;
 import com.entornos.p1.backuistudy.repository.IUserRepository;
@@ -47,10 +48,10 @@ public class AuthenticationServiceImpl {
 
 
     public JwtAuthenticationResponse signin(SignInRequestDTO request) {
+        var user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new CustomException("Invalid username or password."));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        var user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
