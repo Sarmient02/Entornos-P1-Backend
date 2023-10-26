@@ -29,9 +29,8 @@ public class SeedDataConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("OLA 1");
         if (userRepository.count() == 0) {
-            System.out.println("OLA 2");
+
             User admin = User
                     .builder()
                     .fullName("Admin")
