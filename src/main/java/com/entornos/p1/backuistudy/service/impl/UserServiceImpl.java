@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     public boolean edit(EditUserRequestDTO editedUser) {
-        if (userRepository.findById(editedUser.getId()).isPresent()){
+        Optional<User> oldUser = userRepository.findById(editedUser.getId());
+        if (oldUser.isPresent()){
+            if(editedUser.getPassword().isEmpty() || editedUser.getPassword() == null){
+                editedUser.setPassword(oldUser.get().getPassword());
+            }else{
+                editedUser.setPassword(passwordEncoder.encode(editedUser.getPassword()));
+            }
             User user = User
                     .builder()
                     .id(editedUser.getId())
@@ -61,7 +68,7 @@ public class UserServiceImpl implements IUserService {
                     .studentCode(editedUser.getStudentCode())
                     .email(editedUser.getEmail())
                     .username(editedUser.getUsername())
-                    .password(passwordEncoder.encode(editedUser.getPassword()))
+                    .password(editedUser.getPassword())
                     .role(Role.valueOf(editedUser.getRole()))
                     .build();
             this.save(user);
