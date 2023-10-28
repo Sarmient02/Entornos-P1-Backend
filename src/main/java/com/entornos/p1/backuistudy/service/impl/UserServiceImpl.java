@@ -1,12 +1,17 @@
 package com.entornos.p1.backuistudy.service.impl;
 
 import com.entornos.p1.backuistudy.dto.EditUserRequestDTO;
+import com.entornos.p1.backuistudy.dto.UserDataDTO;
 import com.entornos.p1.backuistudy.model.Role;
 import com.entornos.p1.backuistudy.model.User;
 import com.entornos.p1.backuistudy.repository.IUserRepository;
 import com.entornos.p1.backuistudy.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +40,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public User save(User newUser) {
@@ -51,6 +56,15 @@ public class UserServiceImpl implements IUserService {
 
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public UserDataDTO getUserData() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserDataDTO userDataDTO = new UserDataDTO();
+        userDataDTO.setUsername(userDetails.getUsername());
+        userDataDTO.setRole(userDetails.getAuthorities().toArray()[0].toString());
+        return userDataDTO;
     }
 
     public boolean edit(EditUserRequestDTO editedUser) {

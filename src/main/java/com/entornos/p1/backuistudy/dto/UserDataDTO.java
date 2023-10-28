@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDataDTO {
 
-
     private String username;
-
-    private String email;
-
-    private String password;
 
     private String role;
 

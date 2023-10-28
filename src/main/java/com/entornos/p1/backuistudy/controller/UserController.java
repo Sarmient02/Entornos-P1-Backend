@@ -2,6 +2,7 @@ package com.entornos.p1.backuistudy.controller;
 
 import com.entornos.p1.backuistudy.dto.EditUserRequestDTO;
 import com.entornos.p1.backuistudy.dto.SignUpRequestDTO;
+import com.entornos.p1.backuistudy.dto.UserDataDTO;
 import com.entornos.p1.backuistudy.service.impl.AuthenticationServiceImpl;
 import com.entornos.p1.backuistudy.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,12 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(@PathVariable Long id) {
         userService.delete(id);
+    }
+
+    @GetMapping("/data")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
+    public ResponseEntity<UserDataDTO> getUserData() {
+        return ResponseEntity.ok(userService.getUserData());
     }
 
     @Autowired
