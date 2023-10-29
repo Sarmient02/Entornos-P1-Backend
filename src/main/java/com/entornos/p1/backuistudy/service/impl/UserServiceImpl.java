@@ -64,6 +64,10 @@ public class UserServiceImpl implements IUserService {
         UserDataDTO userDataDTO = new UserDataDTO();
         userDataDTO.setUsername(userDetails.getUsername());
         userDataDTO.setRole(userDetails.getAuthorities().toArray()[0].toString());
+        userRepository.findByUsername(userDetails.getUsername()).ifPresent(user -> {
+            userDataDTO.setFullName(user.getFullName());
+            userDataDTO.setId(user.getId());
+        });
         return userDataDTO;
     }
 
