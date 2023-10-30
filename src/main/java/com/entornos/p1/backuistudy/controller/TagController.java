@@ -27,6 +27,22 @@ public class TagController {
 
     }
 
+    @PostMapping("/new")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Boolean> newTag(@RequestBody Tag newTag) {
+        var response = this.tagService.newTag(newTag);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @PutMapping("/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Boolean> editTag(@RequestBody Tag editTag) {
+        var response = this.tagService.editTag(editTag);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Boolean> deleteTag(@RequestParam Long tagId) {

@@ -3,6 +3,7 @@ package com.entornos.p1.backuistudy.service.impl;
 import com.entornos.p1.backuistudy.dto.PostDTO;
 import com.entornos.p1.backuistudy.model.Post;
 import com.entornos.p1.backuistudy.repository.IPostRepository;
+import com.entornos.p1.backuistudy.repository.ISubjectRepository;
 import com.entornos.p1.backuistudy.repository.IUserRepository;
 import com.entornos.p1.backuistudy.service.interfaces.IPostService;
 import com.entornos.p1.backuistudy.service.interfaces.IUserService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +24,9 @@ public class PostServiceImpl implements IPostService {
 
     private IUserRepository userRepository;
 
+    private ISubjectRepository subjectRepository;
+
+
 
     @Override
     public List<Post> getAll() {
@@ -33,11 +38,6 @@ public class PostServiceImpl implements IPostService {
         return this.postRepository.findByTitleLike(title);
     }
 
-    /*@Override
-    public Boolean newPost(PostDTO newPost) {
-        Post toSave =
-        return this.postRepository.save()
-    }*/
 
     @Override
     public Boolean deletePost(Long id, Long userId) {
@@ -51,6 +51,29 @@ public class PostServiceImpl implements IPostService {
         return true;
     }
 
+    @Override
+    public Boolean newPost(Post newPost) {
+        var user = this.userRepository.findById(newPost.getUserId());
+        var subject = this.subjectRepository.findById(newPost.getSubjectId());
+        if (user.isEmpty() || subject.isEmpty()) {
+            return false;
+        }
+        newPost.setCreatedAt(new Date());
+
+        this.postRepository.save(newPost);
+        return true;
+    }
+
+    @Override
+    public Boolean editPost(Post post) {
+        var postToEdit = this.postRepository.findById(post.getId());
+        if (postToEdit.isEmpty() || !Objects.equals(postToEdit.get().getUserId(), post.getUserId())) {
+            return false;
+        }
+        this.postRepository.save(post);
+        return true;
+    }
+
     @Autowired
     public void setPostRepository(IPostRepository postRepository) {
         this.postRepository = postRepository;
@@ -59,5 +82,10 @@ public class PostServiceImpl implements IPostService {
     @Autowired
     public void setUserRepository(IUserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setSubjectRepository(ISubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
     }
 }

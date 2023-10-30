@@ -13,4 +13,7 @@ public interface ITagService {
     Boolean deleteTag(Long id);
 
 
+    Boolean newTag(Tag newTag);
+
+    Boolean editTag(Tag editTag);
 }

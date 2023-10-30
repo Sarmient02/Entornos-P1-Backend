@@ -26,6 +26,26 @@ public class TagServiceImpl implements ITagService {
         return true;
     }
 
+    @Override
+    public Boolean newTag(Tag newTag) {
+        var exists = this.tagRepository.findTopByName(newTag.getName());
+        if (exists != null) {
+            return false;
+        }
+        this.tagRepository.save(newTag);
+        return true;
+    }
+
+    @Override
+    public Boolean editTag(Tag editTag) {
+        var exists = this.tagRepository.findById(editTag.getId());
+        if (exists.isEmpty()) {
+            return false;
+        }
+        this.tagRepository.save(editTag);
+        return true;
+    }
+
     @Autowired
     public void setTagRepository(ITagRepository tagRepository) {
         this.tagRepository = tagRepository;

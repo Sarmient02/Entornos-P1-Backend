@@ -1,6 +1,7 @@
 package com.entornos.p1.backuistudy.controller;
 
 import com.entornos.p1.backuistudy.dto.PostDTO;
+import com.entornos.p1.backuistudy.mapper.PostMapper;
 import com.entornos.p1.backuistudy.service.interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,21 @@ public class PostController {
         return (postList==null || postList.isEmpty()) ? ResponseEntity.ok(postList) : ResponseEntity.noContent();
     }
 
-    /*@PostMapping()
+    @PostMapping
     public ResponseEntity<Boolean> newPost(@RequestBody PostDTO newPost) {
-        var response = this.postService.newPost(newPost);
+        var post = PostMapper.INSTANCE.toPost(newPost);
+        var response = this.postService.newPost(post);
 
         return new ResponseEntity<Boolean>(response, HttpStatus.OK);
-    }*/
+    }
+
+    @PutMapping
+    public ResponseEntity<Boolean> editPost(@RequestBody PostDTO editPost) {
+        var post = PostMapper.INSTANCE.toPost(editPost);
+        var response = this.postService.editPost(post);
+
+        return new ResponseEntity<Boolean>(response, HttpStatus.OK);
+    }
 
     @DeleteMapping()
     public ResponseEntity<Boolean> deletePost(@RequestParam Long id, @RequestParam Long userId) {

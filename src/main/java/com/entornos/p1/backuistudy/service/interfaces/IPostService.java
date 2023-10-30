@@ -17,4 +17,7 @@ public interface IPostService {
 
     Boolean deletePost(Long id, Long userId);
 
+    Boolean newPost(Post newPost);
+
+    Boolean editPost(Post post);
 }
