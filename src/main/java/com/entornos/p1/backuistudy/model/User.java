@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -19,7 +21,8 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Table(name = "user", schema = "public")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+    private static final long serialVersionUID = 4659509933512471771L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

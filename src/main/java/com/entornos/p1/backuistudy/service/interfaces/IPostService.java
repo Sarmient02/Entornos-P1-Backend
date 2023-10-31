@@ -9,9 +9,9 @@ import java.util.List;
 @Service
 public interface IPostService {
 
-    List<Post> getAll();
+    List<PostDTO> getAll();
 
-    List<Post> getByPostTitle(String title);
+    List<PostDTO> getByPostTitle(String title);
 
     //Boolean newPost(PostDTO newPost);
 

@@ -1,5 +1,7 @@
 package com.entornos.p1.backuistudy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import jakarta.persistence.*;
@@ -15,7 +17,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "post")
+@Table(name = "post", schema = "public")
 public class Post implements Serializable {
     private static final long serialVersionUID = 8416044153824134323L;
     @Id
@@ -41,11 +43,13 @@ public class Post implements Serializable {
     @Column(name = "access_url")
     private String accessUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", nullable = false, insertable = false, updatable = false)
     private Subject subject;
 

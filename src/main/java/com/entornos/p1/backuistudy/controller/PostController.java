@@ -21,14 +21,14 @@ public class PostController {
     public Object getAll() {
         var postList = this.postService.getAll();
 
-        return (postList == null || postList.isEmpty()) ? ResponseEntity.ok(postList) : ResponseEntity.noContent();
+        return (postList == null || postList.isEmpty()) ? ResponseEntity.noContent().build() : ResponseEntity.ok(postList);
     }
 
     @GetMapping("/getByTitle")
     public Object getByTitle(@RequestParam(value = "title") String title) {
         var postList = this.postService.getByPostTitle(title);
 
-        return (postList==null || postList.isEmpty()) ? ResponseEntity.ok(postList) : ResponseEntity.noContent();
+        return (postList == null || postList.isEmpty()) ? ResponseEntity.noContent().build() : ResponseEntity.ok(postList);
     }
 
     @PostMapping

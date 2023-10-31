@@ -6,6 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface PostMapper {
 
@@ -18,6 +20,8 @@ public interface PostMapper {
     @Mapping(source = "accessUrl", target = "accessUrl")
     @Mapping(source = "createdAt", target = "createdAt")
     PostDTO toPostDTO(Post post);
+
+    List<PostDTO> toPostListDTO(List<Post> postList);
 
     Post toPost(PostDTO postDTO);
 }

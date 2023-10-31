@@ -1,12 +1,12 @@
 package com.entornos.p1.backuistudy.service.impl;
 
 import com.entornos.p1.backuistudy.dto.PostDTO;
+import com.entornos.p1.backuistudy.mapper.PostMapper;
 import com.entornos.p1.backuistudy.model.Post;
 import com.entornos.p1.backuistudy.repository.IPostRepository;
 import com.entornos.p1.backuistudy.repository.ISubjectRepository;
 import com.entornos.p1.backuistudy.repository.IUserRepository;
 import com.entornos.p1.backuistudy.service.interfaces.IPostService;
-import com.entornos.p1.backuistudy.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +28,17 @@ public class PostServiceImpl implements IPostService {
 
 
     @Override
-    public List<Post> getAll() {
-        return this.postRepository.findAll();
+    public List<PostDTO> getAll() {
+        List<Post> postList = this.postRepository.findAll();
+        List<PostDTO> postDTOS = PostMapper.INSTANCE.toPostListDTO(postList);
+        return postDTOS;
     }
 
     @Override
-    public List<Post> getByPostTitle(String title) {
-        return this.postRepository.findByTitleLike(title);
+    public List<PostDTO> getByPostTitle(String title) {
+        List<Post> postList = this.postRepository.findByTitleLike(title.toLowerCase());
+        List<PostDTO> postDTOS = PostMapper.INSTANCE.toPostListDTO(postList);
+        return postDTOS;
     }
 
 

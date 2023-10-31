@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface IPostRepository extends JpaRepository<Post, Long> {
 
-    @Query("FROM Post p WHERE p.title LIKE :title")
+    @Query("FROM Post p WHERE LOWER(p.title) LIKE %:title% ")
     List<Post> findByTitleLike(String title);
 }
